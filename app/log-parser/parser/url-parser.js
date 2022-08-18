@@ -19,7 +19,7 @@ function UrlParser() {
 
     this.excCommand = function () {
         console.log('Execute command: ' + this.command);
-        exec(this.command,
+        exec(this.command, {maxBuffer: 1024 * 500},
             (error, stdout, stderr) => {
                 this.parserLog(stdout);
 

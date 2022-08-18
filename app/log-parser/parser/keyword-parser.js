@@ -27,7 +27,7 @@ function KeywordParser() {
         let commands = getCommand();
         for (const key in commands) {
             console.log('Execute command: ' + commands[key]);
-            exec(commands[key],
+            exec(commands[key], {maxBuffer: 1024 * 500},
                 (error, stdout, stderr) => {
                     this.parserLog(stdout, key);
                     if (stderr != '') {
