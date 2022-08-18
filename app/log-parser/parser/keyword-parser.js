@@ -66,7 +66,7 @@ function KeywordParser() {
         }
         for (const key in suspectedLog) {
             if (suspectedLog[key].count > CON_REQUEST_MAX_SEND_NOTIFY) {
-                let subject = 'ATTACK DETECTOR phát hiện ' + self.siteName + ' đang bị request nhiều lần';
+                let subject = 'ATTACK DETECTOR phát hiện ' + self.siteName + ' đang bị request nhiều lần vào keyword "' + key + '" trên url';
                 let content = 'Đường dẫn chứa từ khóa "' + key + '" bị request ' + suspectedLog[key].count + ' lần trong ' + self.numberLine + ' dòng cuối file ' + self.path + '\n';
                 content += 'Chi tiết:\n';
                 for (let i = 0; i < suspectedLog[key].log.length; i++) {
