@@ -1,0 +1,15 @@
+{
+  "name": "attack-detector",
+  "version": "1.0.0",
+  "description": "Parse and monitor access_log of httpd",
+  "main": "app.js",
+  "scripts": {
+    "test": "test/test.js"
+  },
+  "author": "Megaads Technical Team",
+  "license": "ISC",
+  "dependencies": {
+    "node-schedule": "^2.1.0",
+    "nodemailer": "^6.7.8"
+  }
+}
