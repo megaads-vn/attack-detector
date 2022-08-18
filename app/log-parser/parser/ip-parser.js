@@ -1,7 +1,7 @@
 module.exports = IpParser;
 
 const exec  = require("child_process").exec;
-const CON_REQUEST_MAX = 100;
+const CON_REQUEST_MAX = 400;
 
 var AbtractParser = require(__dir + "/app/log-parser/abtract-parser");
 
