@@ -8,7 +8,7 @@ var AbtractParser = require(__dir + "/app/log-parser/abtract-parser");
 function IpParser() {
 
     var self = this;
-    this.command = `tail -n` + self.numberLine + ` `+ self.path + ` | cut -f 1 -d ' ' | sort | uniq -c | sort -nr`;
+    this.command = `tail -n ` + self.numberLine + ` `+ self.path + ` | cut -f 1 -d ' ' | sort | uniq -c | sort -nr`;
 
     this.init = function () {
         console.log('Init IpParser');
