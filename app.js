@@ -1,5 +1,2 @@
 global.__dir = __dirname;
-
-const Schedule = require(__dir + "/app/schedule");
-let schedule = new Schedule();
-schedule.init();
+require(__dir + "/app/core/start").start();

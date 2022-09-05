@@ -1,8 +1,11 @@
 module.exports = KeywordParser;
 
 const exec  = require("child_process").exec;
+const FileIo = require(__dir + '/app/helper/file-io');
+const Utils = require(__dir + '/app/helper/utils');
 const CON_REQUEST_MAX = 10;
 const CON_REQUEST_MAX_SEND_NOTIFY = 1000;
+const PATH_LOG = __dir + FileIo.ip_attacker_path + '/keyword-parser';
 
 var AbtractParser = require(__dir + "/app/log-parser/abtract-parser");
 
@@ -12,6 +15,7 @@ function KeywordParser() {
 
     this.init = function () {
         console.log('Init KeywordParser');
+        FileIo.createDirectory(PATH_LOG);
         this.excCommand();
     }
 
@@ -43,6 +47,9 @@ function KeywordParser() {
 
     this.parserLog = function (data, keyword) {
         console.log('KeywordParser parsing log');
+        let nameFile = Utils.getDateMakeName();
+        let path = PATH_LOG + '/' + nameFile;
+        FileIo.createFile(path);
         let arrLogs = self.convertToArrayByNewLine(data);
         let suspectedLog = {};
         for (let i = 0; i < arrLogs.length; i++) {
@@ -56,29 +63,23 @@ function KeywordParser() {
                 if (typeof suspectedLog[keyword] == 'undefined') {
                     suspectedLog[keyword] = {
                         count: countRequest,
-                        log: [item]
+                        log: [logAnalysis[1] + ' ' + logAnalysis[2]]
                     };
                 } else {
                     suspectedLog[keyword].count += countRequest;
-                    suspectedLog[keyword].log.push(item);
+                    suspectedLog[keyword].log.push(logAnalysis[1] + ' ' + logAnalysis[2]);
                 }
             }
         }
+        let logs = FileIo.read(path);
         for (const key in suspectedLog) {
             if (suspectedLog[key].count > CON_REQUEST_MAX_SEND_NOTIFY) {
-                let subject = 'ATTACK DETECTOR phát hiện ' + self.siteName + ' đang bị request nhiều lần vào keyword "' + key + '" trên url';
-                let content = 'Đường dẫn chứa từ khóa "' + key + '" bị request ' + suspectedLog[key].count + ' lần trong ' + self.numberLine + ' dòng cuối file ' + self.path + '\n';
-                content += 'Chi tiết:\n';
-                for (let i = 0; i < suspectedLog[key].log.length; i++) {
-                    content += suspectedLog[key].log[i] + '\n';
+                if (logs.indexOf(suspectedLog[key].log[i]) < 0) {
+                    FileIo.write(path, suspectedLog[key].log[i]);
                 }
-                console.log('KeywordParser send notify with keyword ' + key);
-                self.sendEmail(subject, content, null);
             }
         }
-    }   
-
-
+    }
 
 }
 

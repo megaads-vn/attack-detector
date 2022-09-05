@@ -1,7 +1,10 @@
 module.exports = IpParser;
 
 const exec  = require("child_process").exec;
-const CON_REQUEST_MAX = 700;
+const FileIo = require(__dir + '/app/helper/file-io');
+const Utils = require(__dir + '/app/helper/utils');
+const CON_REQUEST_MAX = 1000;
+const PATH_LOG = __dir + FileIo.ip_attacker_path + '/ip-parser';
 
 var AbtractParser = require(__dir + "/app/log-parser/abtract-parser");
 
@@ -12,6 +15,7 @@ function IpParser() {
 
     this.init = function () {
         console.log('Init IpParser');
+        FileIo.createDirectory(PATH_LOG);
         this.excCommand();
     }
 
@@ -33,6 +37,9 @@ function IpParser() {
 
     this.parserLog = function (data) {
         console.log('IpParser parsing log');
+        let nameFile = Utils.getDateMakeName();
+        let path = PATH_LOG + '/' + nameFile;
+        FileIo.createFile(path);
         let arrLogs = self.convertToArrayByNewLine(data);
         let suspectedLog = [];
         for (let i = 0; i < arrLogs.length; i++) {
@@ -43,18 +50,16 @@ function IpParser() {
                 break;
             }
             if (countRequest >= CON_REQUEST_MAX && self.ipIgnores.indexOf(logAnalysis[1]) < 0) {
-                suspectedLog.push(item);
+                suspectedLog.push(logAnalysis[1]);
             }
         }
+        let logs = FileIo.read(path);
         if (suspectedLog.length > 0) {
-            let subject = 'ATTACK DETECTOR phát hiện ' + self.siteName + ' đang bị request nhiều bất thường.';
-            let content = 'Danh sách ip request nhiều bất thường trong ' + self.numberLine + ' dòng cuối file ' + self.path + '\n';
-                content += 'Chi tiết:\n';
             for (let i = 0; i < suspectedLog.length; i++) {
-                content += suspectedLog[i] + '\n';
+                if (logs.indexOf(suspectedLog[i]) < 0) {
+                    FileIo.write(path, suspectedLog[i]);
+                }
             }
-            console.log('IpParser send notify');
-            self.sendEmail(subject, content, null);
         }
     }
 
