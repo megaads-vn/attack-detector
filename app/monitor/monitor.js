@@ -28,14 +28,17 @@ function Monitor() {
                 if (data.length > 0) {
                     for (let i = 0; i < data.length; i++) {
                         let items = data[i].split(' ');
-                        if (ips.indexOf(items[0]) < 0) {
+                        if (ips.indexOf(items[0]) < 0 && items[0] != '') {
                             ips.push(items[0]);
                         }
                     }
                 }
             }
         }
-       this.warning(ips);
+        const isEmpty = ips.length === 0;
+        if (!isEmpty) {
+            this.warning(ips);
+        }
     }
 
     this.warning = function (data) {
