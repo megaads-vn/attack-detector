@@ -3,7 +3,6 @@ module.exports = IpParser;
 const exec  = require("child_process").exec;
 const FileIo = require(__dir + '/app/helper/file-io');
 const Utils = require(__dir + '/app/helper/utils');
-const CON_REQUEST_MAX = 1000;
 const PATH_LOG = __dir + FileIo.ip_attacker_path + '/ip-parser';
 
 var AbtractParser = require(__dir + "/app/log-parser/abtract-parser");
@@ -46,10 +45,10 @@ function IpParser() {
             let item = arrLogs[i].trim();
             let logAnalysis = item.split(' ');
             let countRequest = parseInt(logAnalysis[0]);
-            if (countRequest < CON_REQUEST_MAX) {
+            if (countRequest < self.numberRequestWarning) {
                 break;
             }
-            if (countRequest >= CON_REQUEST_MAX && self.ipIgnores.indexOf(logAnalysis[1]) < 0) {
+            if (countRequest >= self.numberRequestWarning && self.ipIgnores.indexOf(logAnalysis[1]) < 0) {
                 suspectedLog.push(logAnalysis[1]);
             }
         }

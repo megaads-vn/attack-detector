@@ -4,7 +4,6 @@ const exec  = require("child_process").exec;
 const FileIo = require(__dir + '/app/helper/file-io');
 const Utils = require(__dir + '/app/helper/utils');
 const CON_REQUEST_MAX = 10;
-const CON_REQUEST_MAX_SEND_NOTIFY = 1000;
 const PATH_LOG = __dir + FileIo.ip_attacker_path + '/url-parser';
 
 
@@ -64,7 +63,7 @@ function UrlParser() {
         }
         let logs = FileIo.read(path);
         for (const key in suspectedLog) {
-            if (suspectedLog[key].count > CON_REQUEST_MAX_SEND_NOTIFY) {
+            if (suspectedLog[key].count > self.numberRequestWarning) {
                 for (let i = 0; i < suspectedLog[key].log.length; i++) {
                     if (logs.indexOf(suspectedLog[key].log[i]) < 0) {
                         FileIo.write(path, suspectedLog[key].log[i]);

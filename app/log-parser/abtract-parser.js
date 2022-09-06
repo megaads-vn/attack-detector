@@ -11,6 +11,7 @@ function AbtractParser() {
     this.ipIgnores = appConfig.ip_ignore;
     this.keywords = appConfig.keywords;
     this.siteName = appConfig.site_name;
+    this.numberRequestWarning = appConfig.number_request_warning;
 
     this.excCommand = function () {
         throw new Error("not implemented");

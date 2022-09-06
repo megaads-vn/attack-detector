@@ -4,8 +4,9 @@ module.exports = {
         keyword_in_url: "on",
         ip: "on"
     }, 
-    path: "/Users/nguyenkimtung/Downloads/logfile/test/access_log", // đường dẫn tới file access_log
+    path: "/var/log/httpd/access_log", // đường dẫn tới file access_log
     number_line: 5000, // số dòng đọc cuối file để parse log
+    number_request_warning: 1000,
     ip_ignore: [],
     keywords: [
         "page=", 
