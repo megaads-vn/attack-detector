@@ -26,12 +26,19 @@ module.exports.createFile = function createFile(path) {
 }
 
 module.exports.createDirectory = function createDirectory(dir) {
-    try {
-        if (!fs.existsSync(dir)){
-            fs.mkdirSync(dir, { recursive: true });
+    let paths = dir.split('/');
+    let path = '';
+    for (let i = 0; i < paths.length; i++) {
+        if (paths[i] != '') {
+            path += '/' + paths[i];
+            try {
+                if (!fs.existsSync(path)){
+                    fs.mkdirSync(path, { recursive: true });
+                }
+            } catch(err) {
+                console.error(err)
+            }
         }
-    } catch(err) {
-        console.error(err)
     }
 }   
 
