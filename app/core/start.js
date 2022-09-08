@@ -5,7 +5,8 @@ const appConfig = require(__dir + '/app/config/app');
 const UrlParser = require(__dir + "/app/log-parser/parser/url-parser");
 const KeywordParser = require(__dir + "/app/log-parser/parser/keyword-parser");
 const IpParser = require(__dir + "/app/log-parser/parser/ip-parser");
-const Monitor = require(__dir + "/app/monitor/monitor")
+const Monitor = require(__dir + "/app/monitor/monitor");
+const App = require(__dir + "/app/core/server");
 
 function Start() {
 
@@ -14,8 +15,8 @@ function Start() {
     }
 
     function boot() {
+
         if (appConfig.mode.url == 'on') {
-            console.log('Schedule for UrlParser');
             const job = schedule.scheduleJob('*/30 * * * * *', function() {
                 let urlParser = new UrlParser();
                 urlParser.init();    
@@ -24,7 +25,6 @@ function Start() {
 
         setTimeout(function () {
             if (appConfig.mode.keyword_in_url == 'on') {
-                console.log('Schedule for KeywordParser');
                 const job = schedule.scheduleJob('*/30 * * * * *', function() {
                     let keywordParser = new KeywordParser();
                     keywordParser.init();
@@ -34,7 +34,6 @@ function Start() {
         
 
         if (appConfig.mode.ip == 'on') {
-            console.log('Schedule for IpParser');
             const job = schedule.scheduleJob('*/45 * * * * *', function() {
                 let ipParser = new IpParser();
                 ipParser.init();

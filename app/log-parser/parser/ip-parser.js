@@ -13,13 +13,11 @@ function IpParser() {
     this.command = `tail -n ` + self.numberLine + ` `+ self.path + ` | cut -f 1 -d ' ' | sort | uniq -c | sort -nr`;
 
     this.init = function () {
-        console.log('Init IpParser');
         FileIo.createDirectory(PATH_LOG);
         this.excCommand();
     }
 
     this.excCommand = function () {
-        console.log('Execute command: ' + this.command);
         exec(this.command, {maxBuffer: 1024 * 1000},
             (error, stdout, stderr) => {
                 this.parserLog(stdout);
@@ -35,8 +33,7 @@ function IpParser() {
     }
 
     this.parserLog = function (data) {
-        console.log('IpParser parsing log');
-        let nameFile = Utils.getDateMakeName();
+        let nameFile = Utils.getNameFileByDate();
         let path = PATH_LOG + '/' + nameFile;
         FileIo.createFile(path);
         let arrLogs = self.convertToArrayByNewLine(data);

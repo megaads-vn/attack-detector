@@ -1,4 +1,4 @@
-module.exports.getDateMakeName = function getDateMakeName() {
+module.exports.getNameFileByDate = function getNameFileByDate() {
     let ts = Date.now();
     let date_ob = new Date(ts);
     let date = date_ob.getDate();

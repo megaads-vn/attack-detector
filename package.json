@@ -9,6 +9,7 @@
   "author": "Megaads Technical Team",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.1",
     "node-schedule": "^2.1.0",
     "nodemailer": "^6.7.8"
   }

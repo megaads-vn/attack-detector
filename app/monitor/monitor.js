@@ -12,7 +12,7 @@ function Monitor() {
         'ip-parser', 'keyword-parser', 'url-parser'
     ];
 
-    this.nameFile = Utils.getDateMakeName();
+    this.nameFile = Utils.getNameFileByDate();
 
     this.init = function () {
         FileIo.createDirectory(PATH_EMAIL);

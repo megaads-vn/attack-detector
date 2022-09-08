@@ -13,7 +13,6 @@ function KeywordParser() {
     var self = this;
 
     this.init = function () {
-        console.log('Init KeywordParser');
         FileIo.createDirectory(PATH_LOG);
         this.excCommand();
     }
@@ -29,7 +28,6 @@ function KeywordParser() {
     this.excCommand = function () {
         let commands = getCommand();
         for (const key in commands) {
-            console.log('Execute command: ' + commands[key]);
             exec(commands[key], {maxBuffer: 1024 * 1000},
                 (error, stdout, stderr) => {
                     this.parserLog(stdout, key);
@@ -45,8 +43,7 @@ function KeywordParser() {
     }
 
     this.parserLog = function (data, keyword) {
-        console.log('KeywordParser parsing log');
-        let nameFile = Utils.getDateMakeName();
+        let nameFile = Utils.getNameFileByDate();
         let path = PATH_LOG + '/' + nameFile;
         FileIo.createFile(path);
         let arrLogs = self.convertToArrayByNewLine(data);
